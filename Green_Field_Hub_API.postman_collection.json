@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Green Field Hub - Tractor API",
+    "description": "API collection for tractor registration and rental management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Tractors",
+      "item": [
+        {
+          "name": "Register New Tractor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ownerName\": \"Rajesh Kumar\",\n  \"email\": \"rajesh@example.com\",\n  \"phone\": \"+91 98765 43210\",\n  \"location\": \"Punjab, Ludhiana\",\n  \"model\": \"Mahindra 575 DI\",\n  \"tractorNumber\": \"PB-10-AB-1234\",\n  \"horsepower\": 47,\n  \"fuelType\": \"Diesel\",\n  \"rentPerHour\": 500,\n  \"rentPerDay\": 3500,\n  \"isAvailable\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tractors/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tractors",
+                "register"
+              ]
+            },
+            "description": "Register a new tractor with owner details, email, horsepower, and fuel type"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tractors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/tractors",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tractors"
+              ]
+            },
+            "description": "Retrieve all registered tractors"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Tractor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/tractors/{{tractorId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tractors",
+                "{{tractorId}}"
+              ]
+            },
+            "description": "Retrieve a specific tractor by its MongoDB ObjectId"
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Rental",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tractorId\": \"{{tractorId}}\",\n  \"renterEmail\": \"farmer@example.com\",\n  \"renterName\": \"Suresh Patel\",\n  \"startDate\": \"2025-02-15\",\n  \"rentalType\": \"daily\",\n  \"duration\": 3,\n  \"totalCost\": 10500\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tractors/confirm-rental",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tractors",
+                "confirm-rental"
+              ]
+            },
+            "description": "Confirm a rental booking and send emails to both renter and owner"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "tractorId",
+      "value": "paste_mongodb_id_here",
+      "type": "string"
+    }
+  ]
+}

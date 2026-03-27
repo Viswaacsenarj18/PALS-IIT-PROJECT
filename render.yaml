@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: pals-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:\n      - key: NODE_ENV\n        value: production\n      - key: PORT\n        value: $PORT\n      - key: HOST\n        value: 0.0.0.0\n      - key: MONGO_URI\n        sync: false\n      - key: JWT_SECRET\n        sync: false\n      - key: FRONTEND_URL\n        value: https://yourdomain.vercel.app\n        sync: false\n      - key: EMAIL_USER\n        sync: false\n      - key: EMAIL_PASSWORD\n        sync: false\n      - key: OPENROUTER_API_KEY\n        sync: false\n      - key: CLOUDINARY_CLOUD_NAME\n        sync: false\n      - key: CLOUDINARY_API_KEY\n        sync: false\n      - key: CLOUDINARY_API_SECRET\n        sync: false

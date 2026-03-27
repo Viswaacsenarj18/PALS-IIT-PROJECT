@@ -1,0 +1,208 @@
+{
+  "smartFarm": "Smart Farming System",
+  "liveSystem": "Live Sensor Monitoring",
+
+  "node1": "Node 1",
+  "node2": "Node 2",
+
+  "temperature": "Temperature",
+  "ph": "pH Level",
+  "water": "Water Level",
+  "ldr": "Light Intensity",
+
+  "motorPanel": "Motor Control",
+  "lastUpdated": "Last Updated",
+  "waiting": "Waiting...",
+
+  "smartControlPanel": "Smart Control Panel",
+  "pleaseWait": "Please wait",
+
+  "motorControl": "Motor Control",
+  "motorPump": "Motor Pump",
+  "fertilizer": "Fertilizer",
+  "valveControl": "Valve Control",
+  "valve1": "Valve 1",
+  "valve2": "Valve 2",
+  "on": "ON",
+  "off": "OFF",
+
+  "soilAnalysis": "Soil Analysis",
+  "soilAnalysisHilly": "Soil Analysis",
+
+  "nitrogen": "Nitrogen",
+  "phosphorus": "Phosphorus",
+  "potassium": "Potassium",
+
+  "recommendedCrop": "Recommended Crop",
+  "improveSoil": "Improve Soil Quality",
+
+  "sensorAnalytics": "Sensor Analytics",
+  "allValues": "All Values",
+  "downloadJSON": "Download JSON",
+  "downloadCSV": "Download CSV",
+  "downloadXML": "Download XML",
+
+  "rec_banana": "Banana 🍌",
+  "rec_turmeric": "Turmeric 🌿",
+  "rec_garlic": "Garlic 🧄",
+  "rec_corn": "Corn 🌽",
+  "rec_beans": "Beans 🌱",
+  "rec_beetroot": "Beetroot 🥕",
+  "rec_ragi": "Ragi 🌾",
+  "rec_kambu": "Kambu 🌾",
+  "rec_tapioca": "Tapioca 🌿",
+  "rec_soil_needs_improvement": "Soil Needs Improvement ⚠️",
+
+  "dashboard": "Dashboard",
+  "sensors": "Sensors",
+  "marketplace": "Marketplace",
+
+  "langEN": "English",
+  "langTA": "Tamil",
+  "langKN": "Kannada",
+  "langHI": "Hindi",
+
+  "noData": "No Data Available",
+  "networkError": "Network Error",
+  
+  "rentATractor": "Rent a Tractor",
+  "findAndRent": "Find and rent tractors near you",
+  "searchByModel": "Search by model, location or owner",
+  "availableOnly": "Available Only",
+  "totalTractors": "Total Tractors",
+  "available": "Available",
+  "multipleLocations": "Multiple Locations",
+  "loadingTractors": "Loading tractors...",
+  "errorLoadingTractors": "Error loading tractors",
+  "tryAgain": "Try Again",
+  "noTractorsFound": "No tractors found",
+  "tryAdjustingSearch": "Try adjusting your search",
+  "ownATractor": "Own a Tractor?",
+  "registerYourTractor": "Register your tractor and earn money",
+  "registerYourTractorBtn": "Register Tractor",
+
+  "confirmRental": "Confirm Rental",
+  "hourly": "Hourly",
+  "daily": "Daily",
+  "duration": "Duration",
+  "startDate": "Start Date",
+  "startTime": "Start Time",
+  "renterName": "Renter Name",
+  "renterEmail": "Renter Email",
+  "totalCost": "Total Cost",
+  "confirming": "Confirming...",
+  "notAvailable": "Not Available",
+
+  "marketplaceTitle": "HillSmart Marketplace",
+  "searchProducts": "Search for products...",
+  "noProducts": "No products found",
+  "addProduct": "Add Product",
+  "delete": "Delete",
+  "edit": "Edit",
+  "callSeller": "Call Seller",
+  "messageWhatsApp": "Message on WhatsApp",
+
+   "ownerNameRequired": "Owner name is required",
+  "emailRequired": "Email is required",
+  "invalidEmail": "Invalid email",
+  "phoneRequired": "Phone number is required",
+  "locationRequired": "Location is required",
+  "modelRequired": "Model is required",
+  "tractorNumberRequired": "Tractor number is required",
+  "invalidHorsepower": "Invalid horsepower",
+  "invalidHourlyRate": "Invalid hourly rate",
+  "invalidDailyRate": "Invalid daily rate",
+
+  "pleaseFixErrors": "Please fix the errors",
+  "pleaseLoginAsOwner": "Please login as tractor owner",
+  "registrationFailed": "Registration failed",
+  "registrationSuccess": "Registration successful",
+  "backendNotReachable": "Backend not reachable",
+
+  "registerTractorTitle": "Register Tractor",
+  "registerTractorDesc": "Add your tractor for rental",
+  "tractorRegistration": "Owner Details",
+
+  "ownerName": "Owner Name",
+  "enterYourFullName": "Enter your full name",
+  "phoneNumber": "Phone Number",
+  "examplePhone": "e.g. 9876543210",
+  "cityState": "City, State",
+
+  "tractorDetails": "Tractor Details",
+  "tractorModel": "Tractor Model",
+  "exampleModel": "e.g. Mahindra 575",
+  "exampleTractorNumber": "e.g. TN-01-AB-1234",
+  "horsepower": "Horsepower",
+  "exampleHorsepower": "e.g. 50",
+
+  "fuelType": "Fuel Type",
+  "diesel": "Diesel",
+  "petrol": "Petrol",
+  "bioDiesel": "Bio-Diesel",
+
+  "tractorRental": "Rental Pricing",
+  "rentPerHour": "Rent Per Hour",
+  "exampleRentHour": "e.g. 500",
+  "rentPerDay": "Rent Per Day",
+  "exampleRentDay": "e.g. 3000",
+
+  "availabilityStatus": "Availability",
+  "setAvailable": "Set tractor availability",
+
+  "registering": "Registering...",
+  "registerTractor": "Register Tractor",
+
+   "dashboard": "Dashboard",
+  "sensors": "Sensors",
+  "marketplace": "Marketplace",
+  "tractors": "Tractors",
+  "register": "Register",
+  "login": "Login",
+  "signup": "Sign Up",
+  "logout": "Logout",
+
+  "langEN": "English",
+  "langTA": "Tamil",
+  "langKN": "Kannada",
+  "langHI": "Hindi",
+
+
+  "tractors": "Tractors",
+  "register": "Register",
+  "logout": "Logout",
+
+  "addProductTitle": "Add New Product",
+  "addProductDesc": "List your farm products to reach more customers",
+
+  "productName": "Product Name",
+  "productNamePlaceholder": "e.g., Organic Tomatoes",
+  "description": "Description",
+  "descriptionPlaceholder": "Describe your product...",
+
+  "pricePerKg": "Price per Kg",
+  "priceExample": "e.g., 50",
+
+  "totalQuantity": "Total Quantity",
+  "quantityExample": "e.g., 100",
+
+  "phoneNumber": "Phone Number",
+  "phoneExample": "e.g., 9876543210",
+
+  "category": "Category",
+  "categoryExample": "Vegetables, Fruits...",
+
+  "imageUploadMethod": "Image Upload Method",
+  "uploadFile": "Upload File",
+  "imageUrl": "Image URL",
+  "productImage": "Product Image",
+  "chooseFile": "Choose File",
+  "imageFormat": "JPG, PNG or GIF (Max 5MB)",
+
+  "addingProduct": "Adding Product...",
+  "listProduct": "List Product",
+
+  "productNameRequired": "Product name is required"
+
+
+}

@@ -1,0 +1,1 @@
+export const thinkSpeakUrl = "https://api.thingspeak.com/channels/3232296/feeds.json?api_key=1DF7VGBJUG072J8I&results"

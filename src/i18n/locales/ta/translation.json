@@ -1,0 +1,298 @@
+{
+  "smartFarm": "ஸ்மார்ட் விவசாய அமைப்பு",
+  "liveSystem": "நேரடி சென்சார் கண்காணிப்பு",
+
+  "node1": "நோடு 1",
+  "node2": "நோடு 2",
+
+  "temperature": "வெப்பநிலை",
+  "ph": "pH அளவு",
+  "water": "நீர் நிலை",
+  "ldr": "ஒளி தீவிரம்",
+
+  "motorPanel": "மோட்டார் கட்டுப்பாடு",
+  "lastUpdated": "கடைசியாக புதுப்பிக்கப்பட்டது",
+  "waiting": "காத்திருக்கிறது...",
+
+  "smartControlPanel": "ஸ்மார்ட் கட்டுப்பாட்டு பலகை",
+  "pleaseWait": "தயவு செய்து காத்திருக்கவும்",
+
+  "motorControl": "மோட்டார் கட்டுப்பாடு",
+  "motorPump": "மோட்டார் பம்ப்",
+  "fertilizer": "உர விநியோகம்",
+  "valveControl": "வால்வு கட்டுப்பாடு",
+  "valve1": "வால்வு 1",
+  "valve2": "வால்வு 2",
+  "on": "ஆன்",
+  "off": "ஆஃப்",
+
+  "soilAnalysis": "மண் பகுப்பாய்வு",
+  "soilAnalysisHilly": "மண் பகுப்பாய்வு",
+
+  "nitrogen": "நைட்ரஜன்",
+  "phosphorus": "பாஸ்பரஸ்",
+  "potassium": "பொட்டாசியம்",
+
+  "recommendedCrop": "பரிந்துரைக்கப்பட்ட பயிர்",
+  "improveSoil": "மண் தரத்தை மேம்படுத்தவும்",
+
+  "sensorAnalytics": "சென்சார் பகுப்பாய்வு",
+  "allValues": "அனைத்து மதிப்புகள்",
+  "downloadJSON": "JSON பதிவிறக்கம்",
+  "downloadCSV": "CSV பதிவிறக்கம்",
+  "downloadXML": "XML பதிவிறக்கம்",
+
+  "rec_banana": "வாழை 🍌",
+  "rec_turmeric": "மஞ்சள் 🌿",
+  "rec_garlic": "பூண்டு 🧄",
+  "rec_corn": "மக்காச்சோளம் 🌽",
+  "rec_beans": "பீன்ஸ் 🌱",
+  "rec_beetroot": "பீட்ரூட் 🥕",
+  "rec_ragi": "ராகி 🌾",
+  "rec_kambu": "கம்பு 🌾",
+  "rec_tapioca": "மரவள்ளி 🌿",
+  "rec_soil_needs_improvement": "மண் மேம்பாடு தேவை ⚠️",
+
+  "dashboard": "டாஷ்போர்டு",
+  "sensors": "சென்சார்கள்",
+  "marketplace": "மார்க்கெட்",
+
+  "langEN": "ஆங்கிலம்",
+  "langTA": "தமிழ்",
+  "langKN": "கன்னடம்",
+  "langHI": "இந்தி",
+
+  "noData": "தரவு இல்லை",
+  "networkError": "நெட்வொர்க் பிழை",
+
+  "rentATractor": "டிராக்டர் வாடகைக்கு எடுக்கவும்",
+  "findAndRent": "உங்களுக்குப் பக்கத்தில் டிராக்டரை கண்டுபிடிக்கவும்",
+  "searchByModel": "மாடல் / இடம் / உரிமையாளர் மூலம் தேடவும்",
+  "availableOnly": "கிடைக்கும் மட்டும்",
+  "totalTractors": "மொத்த டிராக்டர்கள்",
+  "available": "கிடைக்கும்",
+  "multipleLocations": "பல இடங்கள்",
+  "loadingTractors": "டிராக்டர்கள் ஏற்றப்படுகிறது...",
+  "errorLoadingTractors": "பிழை ஏற்பட்டது",
+  "tryAgain": "மீண்டும் முயற்சிக்கவும்",
+  "noTractorsFound": "டிராக்டர் இல்லை",
+  "tryAdjustingSearch": "தேடலை மாற்றி முயற்சிக்கவும்",
+  "ownATractor": "உங்களிடம் டிராக்டர் உள்ளதா?",
+  "registerYourTractor": "உங்கள் டிராக்டரை பதிவு செய்து வருமானம் பெறுங்கள்",
+  "registerYourTractorBtn": "டிராக்டர் பதிவு",
+
+  "confirmRental": "வாடகையை உறுதிப்படுத்தவும்",
+  "hourly": "மணி",
+  "daily": "நாள்",
+  "duration": "நேரம்",
+  "startDate": "தொடக்க தேதி",
+  "startTime": "தொடக்க நேரம்",
+  "renterName": "வாடகையாளர் பெயர்",
+  "renterEmail": "மின்னஞ்சல்",
+  "totalCost": "மொத்த செலவு",
+  "confirming": "உறுதிப்படுத்துகிறது...",
+  "notAvailable": "கிடைக்கவில்லை",
+
+  "marketplaceTitle": "ஹில்ஸ்மார்ட் மார்க்கெட்",
+  "searchProducts": "பொருட்களை தேடுங்கள்...",
+  "noProducts": "பொருட்கள் இல்லை",
+  "addProduct": "பொருள் சேர்க்க",
+  "delete": "அழிக்க",
+  "edit": "திருத்த",
+  "callSeller": "அழைக்க",
+  "messageWhatsApp": "வாட்ஸ்அப் செய்தி",
+
+  
+  "ownerNameRequired": "உரிமையாளர் பெயர் தேவை",
+  "emailRequired": "மின்னஞ்சல் தேவை",
+  "invalidEmail": "தவறான மின்னஞ்சல்",
+  "phoneRequired": "தொலைபேசி எண் தேவை",
+  "locationRequired": "இடம் தேவை",
+  "modelRequired": "மாதிரி தேவை",
+  "tractorNumberRequired": "டிராக்டர் எண் தேவை",
+  "invalidHorsepower": "தவறான ஹார்ஸ் பவர்",
+  "invalidHourlyRate": "தவறான மணி விலை",
+  "invalidDailyRate": "தவறான நாள் விலை",
+
+  "pleaseFixErrors": "பிழைகளை சரிசெய்யவும்",
+  "pleaseLoginAsOwner": "டிராக்டர் உரிமையாளராக உள்நுழையவும்",
+  "registrationFailed": "பதிவு தோல்வி",
+  "registrationSuccess": "பதிவு வெற்றி",
+  "backendNotReachable": "சர்வர் இணைப்பு இல்லை",
+
+  "registerTractorTitle": "டிராக்டர் பதிவு",
+  "registerTractorDesc": "உங்கள் டிராக்டரை பதிவு செய்யுங்கள்",
+  "tractorRegistration": "உரிமையாளர் விவரம்",
+
+  "ownerName": "உரிமையாளர் பெயர்",
+  "enterYourFullName": "முழு பெயரை உள்ளிடவும்",
+  "phoneNumber": "தொலைபேசி எண்",
+  "examplePhone": "உதா: 9876543210",
+  "cityState": "நகரம், மாநிலம்",
+
+  "tractorDetails": "டிராக்டர் விவரம்",
+  "tractorModel": "மாதிரி",
+  "exampleModel": "உதா: Mahindra 575",
+  "exampleTractorNumber": "உதா: TN-01-AB-1234",
+  "horsepower": "ஹார்ஸ் பவர்",
+  "exampleHorsepower": "உதா: 50",
+
+  "fuelType": "எரிபொருள்",
+  "diesel": "டீசல்",
+  "petrol": "பெட்ரோல்",
+  "bioDiesel": "பயோ டீசல்",
+
+  "tractorRental": "வாடகை",
+  "rentPerHour": "மணி விலை",
+  "exampleRentHour": "உதா: 500",
+  "rentPerDay": "நாள் விலை",
+  "exampleRentDay": "உதா: 3000",
+
+  "availabilityStatus": "கிடைக்கும் நிலை",
+  "setAvailable": "டிராக்டர் கிடைக்குமா?",
+
+  "registering": "பதிவு செய்கிறது...",
+  "registerTractor": "பதிவு செய்",
+
+   "dashboard": "டாஷ்போர்டு",
+  "sensors": "சென்சார்கள்",
+  "marketplace": "மார்க்கெட்",
+  "tractors": "டிராக்டர்கள்",
+  "register": "பதிவு",
+  "login": "உள்நுழை",
+  "signup": "பதிவு செய்ய",
+  "logout": "வெளியேறு",
+
+  "langEN": "ஆங்கிலம்",
+  "langTA": "தமிழ்",
+  "langKN": "கன்னடம்",
+  "langHI": "இந்தி",
+
+    "tractors": "டிராக்டர்கள்",
+  "register": "பதிவு",
+  "logout": "வெளியேறு",
+
+    "ownerNameRequired": "உரிமையாளர் பெயர் தேவை",
+  "emailRequired": "மின்னஞ்சல் தேவை",
+  "invalidEmail": "தவறான மின்னஞ்சல்",
+  "phoneRequired": "தொலைபேசி எண் தேவை",
+  "locationRequired": "இடம் தேவை",
+  "modelRequired": "மாதிரி தேவை",
+  "tractorNumberRequired": "டிராக்டர் எண் தேவை",
+  "invalidHorsepower": "தவறான ஹார்ஸ் பவர்",
+  "invalidHourlyRate": "தவறான மணி விலை",
+  "invalidDailyRate": "தவறான நாள் விலை",
+
+  "pleaseFixErrors": "பிழைகளை சரிசெய்யவும்",
+  "pleaseLoginAsOwner": "டிராக்டர் உரிமையாளராக உள்நுழையவும்",
+  "registrationFailed": "பதிவு தோல்வி",
+  "registrationSuccess": "பதிவு வெற்றி",
+  "backendNotReachable": "சர்வர் இணைப்பு இல்லை",
+
+  "registerTractorTitle": "டிராக்டர் பதிவு",
+  "registerTractorDesc": "உங்கள் டிராக்டரை பதிவு செய்யுங்கள்",
+  "tractorRegistration": "உரிமையாளர் விவரம்",
+
+  "ownerName": "உரிமையாளர் பெயர்",
+  "enterYourFullName": "முழு பெயரை உள்ளிடவும்",
+  "phoneNumber": "தொலைபேசி எண்",
+  "examplePhone": "உதா: 9876543210",
+  "cityState": "நகரம், மாநிலம்",
+
+  "tractorDetails": "டிராக்டர் விவரம்",
+  "tractorModel": "மாதிரி",
+  "exampleModel": "உதா: Mahindra 575",
+  "exampleTractorNumber": "உதா: TN-01-AB-1234",
+  "horsepower": "ஹார்ஸ் பவர்",
+  "exampleHorsepower": "உதா: 50",
+
+  "fuelType": "எரிபொருள்",
+  "diesel": "டீசல்",
+  "petrol": "பெட்ரோல்",
+  "bioDiesel": "பயோ டீசல்",
+
+  "tractorRental": "வாடகை",
+  "rentPerHour": "மணி விலை",
+  "exampleRentHour": "உதா: 500",
+  "rentPerDay": "நாள் விலை",
+  "exampleRentDay": "உதா: 3000",
+
+  "availabilityStatus": "கிடைக்கும் நிலை",
+  "setAvailable": "டிராக்டர் கிடைக்குமா?",
+
+  "registering": "பதிவு செய்கிறது...",
+  "registerTractor": "பதிவு செய்",
+
+   "ownerNameRequired": "உரிமையாளர் பெயர் தேவை",
+  "emailRequired": "மின்னஞ்சல் தேவை",
+  "invalidEmail": "தவறான மின்னஞ்சல்",
+  "phoneRequired": "தொலைபேசி எண் தேவை",
+  "locationRequired": "இடம் தேவை",
+  "modelRequired": "மாதிரி தேவை",
+  "tractorNumberRequired": "டிராக்டர் எண் தேவை",
+  "invalidHorsepower": "தவறான ஹார்ஸ் பவர்",
+  "invalidHourlyRate": "தவறான மணி விலை",
+  "invalidDailyRate": "தவறான நாள் விலை",
+
+  "pleaseFixErrors": "பிழைகளை சரிசெய்யவும்",
+  "pleaseLoginAsOwner": "டிராக்டர் உரிமையாளராக உள்நுழையவும்",
+  "registrationFailed": "பதிவு தோல்வி",
+  "registrationSuccess": "பதிவு வெற்றி",
+  "backendNotReachable": "சர்வர் இணைப்பு இல்லை",
+
+  "registerTractorTitle": "டிராக்டர் பதிவு",
+  "registerTractorDesc": "உங்கள் டிராக்டரை பதிவு செய்யுங்கள்",
+  "tractorRegistration": "உரிமையாளர் விவரம்",
+
+  "ownerName": "உரிமையாளர் பெயர்",
+  "enterYourFullName": "முழு பெயரை உள்ளிடவும்",
+  "phoneNumber": "தொலைபேசி எண்",
+  "examplePhone": "உதா: 9876543210",
+  "cityState": "நகரம், மாநிலம்",
+
+  "tractorDetails": "டிராக்டர் விவரம்",
+  "tractorModel": "மாதிரி",
+  "exampleModel": "உதா: Mahindra 575",
+  "exampleTractorNumber": "உதா: TN-01-AB-1234",
+  "horsepower": "ஹார்ஸ் பவர்",
+  "exampleHorsepower": "உதா: 50",
+
+  "fuelType": "எரிபொருள்",
+  "diesel": "டீசல்",
+  "petrol": "பெட்ரோல்",
+  "bioDiesel": "பயோ டீசல்",
+
+  "tractorRental": "வாடகை",
+  "rentPerHour": "மணி விலை",
+  "exampleRentHour": "உதா: 500",
+  "rentPerDay": "நாள் விலை",
+  "exampleRentDay": "உதா: 3000",
+
+  "availabilityStatus": "கிடைக்கும் நிலை",
+  "setAvailable": "டிராக்டர் கிடைக்குமா?",
+
+  "registering": "பதிவு செய்கிறது...",
+  "registerTractor": "பதிவு செய்",
+
+   "addProductTitle": "புதிய பொருள் சேர்க்க",
+  "addProductDesc": "உங்கள் விவசாய பொருட்களை விற்பனை செய்யுங்கள்",
+
+  "productName": "பொருள் பெயர்",
+  "productNamePlaceholder": "உதா: ஆர்கானிக் தக்காளி",
+
+  "description": "விவரம்",
+  "descriptionPlaceholder": "பொருளை விவரிக்கவும்",
+
+  "pricePerKg": "கிலோவுக்கு விலை",
+  "totalQuantity": "மொத்த அளவு",
+
+  "phoneNumber": "தொலைபேசி எண்",
+  "category": "வகை",
+
+  "uploadFile": "கோப்பு பதிவேற்று",
+  "imageUrl": "பட இணைப்பு",
+
+  "listProduct": "பொருள் சேர்க்க"
+
+
+}
