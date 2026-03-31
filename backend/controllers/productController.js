@@ -209,8 +209,7 @@ export const updateProduct = async (req, res) => {
 
     let imageUrl = product.image;
 
-    // ✅ HANDLE IMAGE SAFELY
-    if (req.file) {
+    if (req.file && req.file.buffer) {
       try {
         const oldId = getPublicId(product.image);
 
@@ -235,7 +234,6 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // ✅ UPDATE FIELDS SAFELY
     product.name = req.body.name || product.name;
     product.description = req.body.description || product.description;
 

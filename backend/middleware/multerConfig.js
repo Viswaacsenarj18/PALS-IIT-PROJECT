@@ -45,32 +45,28 @@ const upload = multer({
 ═══════════════════════════════════════════════════════ */
 export const uploadToCloudinary = (buffer, originalName) => {
   return new Promise((resolve, reject) => {
-    const nameWithoutExt = (originalName || "product")
-      .split(".")[0]
-      .replace(/\s+/g, "-")
-      .toLowerCase();
 
-    const publicId = `hillsmart/products/${nameWithoutExt}-${Date.now()}`;
+    if (!buffer) {
+      return reject(new Error("No file buffer received"));
+    }
 
-    const uploadStream = cloudinary.uploader.upload_stream(
+    const publicId = `hillsmart/products/${Date.now()}`;
+
+    const stream = cloudinary.uploader.upload_stream(
       {
-        public_id:     publicId,
+        public_id: publicId,
         resource_type: "image",
-        transformation: [
-          { width: 800, height: 800, crop: "limit", quality: "auto" },
-        ],
       },
       (error, result) => {
-        if (error) return reject(error);
+        if (error) {
+          console.error("❌ Cloudinary error:", error);
+          return reject(error);
+        }
         resolve(result.secure_url);
       }
     );
 
-    // Buffer → Readable stream → Cloudinary
-    const readable = new Readable();
-    readable.push(buffer);
-    readable.push(null);
-    readable.pipe(uploadStream);
+    stream.end(buffer); // 🔥 IMPORTANT FIX
   });
 };
 
