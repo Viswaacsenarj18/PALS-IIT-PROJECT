@@ -163,37 +163,120 @@ export const getProductById = async (req, res) => {
    UPDATE PRODUCT
 ========================================= */
 
+// export const updateProduct = async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id);
+
+//     if (!product) return res.status(404).json({ success: false });
+
+//     let imageUrl = product.image;
+
+//     if (req.file) {
+//       const oldId = getPublicId(product.image);
+//       if (oldId) await cloudinary.uploader.destroy(oldId).catch(() => {});
+
+//       imageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname);
+//     }
+
+//     product.name = req.body.name || product.name;
+//     product.description = req.body.description || product.description;
+//     product.pricePerKg = Number(req.body.pricePerKg || product.pricePerKg);
+//     product.totalQuantity = Number(req.body.totalQuantity || product.totalQuantity);
+//     product.totalPrice = product.pricePerKg * product.totalQuantity;
+//     product.image = imageUrl;
+
+//     await product.save();
+
+//     res.json({ success: true, data: product });
+
+//   } catch (error) {
+//     res.status(500).json({ success: false });
+//   }
+// };
 export const updateProduct = async (req, res) => {
   try {
+    console.log("📦 UPDATE BODY:", req.body);
+    console.log("📸 UPDATE FILE:", req.file);
+
     const product = await Product.findById(req.params.id);
 
-    if (!product) return res.status(404).json({ success: false });
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
 
     let imageUrl = product.image;
 
+    // ✅ HANDLE IMAGE SAFELY
     if (req.file) {
-      const oldId = getPublicId(product.image);
-      if (oldId) await cloudinary.uploader.destroy(oldId).catch(() => {});
+      try {
+        const oldId = getPublicId(product.image);
 
-      imageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname);
+        if (oldId) {
+          await cloudinary.uploader.destroy(oldId).catch(() => {});
+        }
+
+        imageUrl = await uploadToCloudinary(
+          req.file.buffer,
+          req.file.originalname
+        );
+
+        console.log("✅ Updated Image:", imageUrl);
+
+      } catch (err) {
+        console.error("❌ Image Upload Error:", err);
+
+        return res.status(500).json({
+          success: false,
+          message: "Image upload failed",
+        });
+      }
     }
 
+    // ✅ UPDATE FIELDS SAFELY
     product.name = req.body.name || product.name;
     product.description = req.body.description || product.description;
-    product.pricePerKg = Number(req.body.pricePerKg || product.pricePerKg);
-    product.totalQuantity = Number(req.body.totalQuantity || product.totalQuantity);
+
+    if (req.body.pricePerKg) {
+      product.pricePerKg = Number(req.body.pricePerKg);
+    }
+
+    if (req.body.totalQuantity) {
+      product.totalQuantity = Number(req.body.totalQuantity);
+      product.stock = Number(req.body.totalQuantity);
+    }
+
     product.totalPrice = product.pricePerKg * product.totalQuantity;
+
+    if (req.body.category) {
+      product.category = req.body.category;
+    }
+
+    if (req.body.phone) {
+      product.phone = req.body.phone.replace(/[^0-9]/g, "");
+    }
+
     product.image = imageUrl;
 
     await product.save();
 
-    res.json({ success: true, data: product });
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: product,
+    });
 
   } catch (error) {
-    res.status(500).json({ success: false });
+    console.error("❌ UPDATE ERROR:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
   }
 };
-
 /* =========================================
    DELETE PRODUCT
 ========================================= */
