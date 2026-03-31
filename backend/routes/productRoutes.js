@@ -13,38 +13,61 @@ import {
 const router = express.Router();
 
 /* ══════════════════════════════════════════════════════════
-   PUBLIC
+   PUBLIC ROUTES
 ══════════════════════════════════════════════════════════ */
 
-// GET all products (marketplace — anyone can browse)
+// ✅ Get all products
 router.get("/", getAllProducts);
 
-// GET single product
+// ✅ Get single product
 router.get("/:id", getProductById);
 
 /* ══════════════════════════════════════════════════════════
-   FARMER ONLY
+   PROTECTED (FARMER ONLY)
 ══════════════════════════════════════════════════════════ */
 
-// POST create product (with optional image upload)
+// ✅ Create product (WITH IMAGE)
 router.post(
   "/",
   protect,
   authorizeRoles("farmer"),
-  upload.single("image"),        // field name must be "image"
+  (req, res, next) => {
+    // 🔥 HANDLE multer errors properly
+    upload.single("image")(req, res, function (err) {
+      if (err) {
+        console.error("❌ Multer Error:", err.message);
+        return res.status(400).json({
+          success: false,
+          message: "Image upload failed",
+        });
+      }
+      next();
+    });
+  },
   createProduct
 );
 
-// PUT update product (with optional new image)
+// ✅ Update product
 router.put(
   "/:id",
   protect,
   authorizeRoles("farmer"),
-  upload.single("image"),
+  (req, res, next) => {
+    upload.single("image")(req, res, function (err) {
+      if (err) {
+        console.error("❌ Multer Error:", err.message);
+        return res.status(400).json({
+          success: false,
+          message: "Image upload failed",
+        });
+      }
+      next();
+    });
+  },
   updateProduct
 );
 
-// DELETE product
+// ✅ Delete product
 router.delete(
   "/:id",
   protect,

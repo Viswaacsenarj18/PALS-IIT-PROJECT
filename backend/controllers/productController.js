@@ -3,103 +3,93 @@ import User from "../models/user.js";
 import { cloudinary, uploadToCloudinary } from "../middleware/multerConfig.js";
 import mongoose from "mongoose";
 
+/* =========================================
+   HELPERS
+========================================= */
+
 const getPublicId = (url) => {
   if (!url || !url.includes("cloudinary")) return null;
   try {
     const parts = url.split("/");
     const uploadIndex = parts.indexOf("upload");
     if (uploadIndex === -1) return null;
+
     const afterUpload = parts.slice(uploadIndex + 1);
     if (/^v\d+$/.test(afterUpload[0])) afterUpload.shift();
+
     return afterUpload.join("/").replace(/\.[^/.]+$/, "");
   } catch {
     return null;
   }
 };
 
-const isValidObjectId = (id) => {
-  return mongoose.Types.ObjectId.isValid(id);
-};
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
+
+/* =========================================
+   CREATE PRODUCT
+========================================= */
 
 export const createProduct = async (req, res) => {
   try {
-    const { 
-      name, 
-      description, 
-      pricePerKg, 
-      totalQuantity, 
-      phone, 
-      category,
-      imageUrl 
-    } = req.body;
+    const { name, description, pricePerKg, totalQuantity, phone, category, imageUrl } = req.body;
 
-    console.log("Received data:", { name, description, pricePerKg, totalQuantity, phone, category, imageUrl });
+    console.log("📦 BODY:", req.body);
+    console.log("📸 FILE:", req.file);
 
-    // Validate required fields
-    if (!name || !name.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: "Product name is required.",
-      });
+    if (!name?.trim()) {
+      return res.status(400).json({ success: false, message: "Product name required" });
     }
 
     if (!pricePerKg || pricePerKg <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Valid price per kg is required.",
-      });
+      return res.status(400).json({ success: false, message: "Valid price required" });
     }
 
     if (!totalQuantity || totalQuantity <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Valid total quantity is required.",
-      });
+      return res.status(400).json({ success: false, message: "Valid quantity required" });
     }
 
-    if (!phone || !phone.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number is required.",
-      });
+    if (!phone?.trim()) {
+      return res.status(400).json({ success: false, message: "Phone required" });
     }
 
-    // Clean phone number
-    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    const cleanPhone = phone.replace(/[^0-9]/g, "");
     if (cleanPhone.length !== 10) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter a valid 10-digit phone number.",
-      });
+      return res.status(400).json({ success: false, message: "Invalid phone number" });
     }
-
-    // Calculate total price and stock in controller (not in middleware)
-    const calculatedTotalPrice = Number(pricePerKg) * Number(totalQuantity);
-    const calculatedStock = Number(totalQuantity);
 
     let imagePath = "https://via.placeholder.com/800x600/4CAF50/FFFFFF?text=No+Image";
 
-    // Handle image - Priority: 1. File upload, 2. Image URL, 3. Default
+    // ✅ FILE UPLOAD
     if (req.file) {
       try {
-        imagePath = await uploadToCloudinary(req.file.buffer, req.file.originalname);
-        console.log("✅ Image uploaded via file:", imagePath);
-      } catch (uploadErr) {
-        console.warn("Cloudinary upload failed:", uploadErr.message);
+        imagePath = await uploadToCloudinary(
+          req.file.buffer,
+          req.file.originalname
+        );
+        console.log("✅ Uploaded:", imagePath);
+      } catch (err) {
+        console.error("❌ Cloudinary Error:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Image upload failed",
+        });
       }
-    } else if (imageUrl && imageUrl.trim()) {
-      imagePath = imageUrl.trim();
-      console.log("✅ Image URL provided:", imagePath);
     }
 
-    // Create product with calculated values
+    // ✅ URL fallback
+    else if (imageUrl?.trim()) {
+      imagePath = imageUrl.trim();
+    }
+
+    const totalPrice = Number(pricePerKg) * Number(totalQuantity);
+
     const product = new Product({
       name: name.trim(),
       description: description?.trim() || "",
       pricePerKg: Number(pricePerKg),
       totalQuantity: Number(totalQuantity),
-      totalPrice: calculatedTotalPrice,
-      stock: calculatedStock,
+      totalPrice,
+      stock: Number(totalQuantity),
       phone: cleanPhone,
       category: category?.trim() || "other",
       image: imagePath,
@@ -107,231 +97,121 @@ export const createProduct = async (req, res) => {
       isActive: true,
     });
 
-    // Update user phone if needed
+    await product.save();
+
+    // update user phone
     const user = await User.findById(req.user._id);
-    if (user && cleanPhone && user.phone !== cleanPhone) {
+    if (user && user.phone !== cleanPhone) {
       user.phone = cleanPhone;
       await user.save();
     }
-
-    // Save product
-    await product.save();
-
-    console.log(`✅ Product created successfully: ${product.name}`);
 
     res.status(201).json({
       success: true,
       message: "Product added successfully",
       data: product,
     });
+
   } catch (error) {
-    console.error("Create product error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to create product: " + error.message,
-      error: error.message,
-    });
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+/* =========================================
+   GET ALL PRODUCTS
+========================================= */
 
 export const getAllProducts = async (req, res) => {
   try {
-    const { category, search, page = 1, limit = 50 } = req.query;
+    const products = await Product.find({ isActive: true })
+      .populate("seller", "name phone")
+      .sort({ createdAt: -1 });
 
-    const filter = { isActive: true };
+    res.json({ success: true, data: products });
 
-    if (category && category !== 'all') {
-      filter.category = { $regex: new RegExp(category, "i") };
-    }
-
-    if (search && search.trim()) {
-      const searchRegex = { $regex: search, $options: 'i' };
-      filter.$or = [
-        { name: searchRegex },
-        { description: searchRegex },
-      ];
-    }
-
-    const pageNum = Math.max(1, parseInt(page, 10));
-    const limitNum = Math.min(100, parseInt(limit, 10));
-    const skip = (pageNum - 1) * limitNum;
-
-    const products = await Product.find(filter)
-      .populate('seller', 'name phone')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limitNum);
-
-    const total = await Product.countDocuments(filter);
-
-    res.status(200).json({ 
-      success: true, 
-      data: products, 
-      count: products.length,
-      total,
-      page: pageNum,
-      pages: Math.ceil(total / limitNum)
-    });
   } catch (error) {
-    console.error("Get products error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Failed to fetch products",
-    });
+    res.status(500).json({ success: false });
   }
 };
+
+/* =========================================
+   GET PRODUCT BY ID ✅ FIX ADDED
+========================================= */
 
 export const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Invalid product ID format" 
-      });
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: "Invalid ID" });
     }
 
-    const product = await Product.findById(id)
-      .populate('seller', 'name phone');
+    const product = await Product.findById(req.params.id)
+      .populate("seller", "name phone");
 
     if (!product) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Product not found" 
-      });
+      return res.status(404).json({ success: false, message: "Not found" });
     }
 
-    res.status(200).json({ 
-      success: true, 
-      data: product 
-    });
+    res.json({ success: true, data: product });
+
   } catch (error) {
-    console.error("Get product error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Failed to fetch product",
-    });
+    res.status(500).json({ success: false });
   }
 };
+
+/* =========================================
+   UPDATE PRODUCT
+========================================= */
 
 export const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, description, pricePerKg, totalQuantity, phone, category, isActive, imageUrl } = req.body;
+    const product = await Product.findById(req.params.id);
 
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Invalid product ID format" 
-      });
-    }
+    if (!product) return res.status(404).json({ success: false });
 
-    const product = await Product.findById(id);
-    if (!product) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Product not found" 
-      });
-    }
+    let imageUrl = product.image;
 
-    if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ 
-        success: false, 
-        message: "You don't have permission to update this product" 
-      });
-    }
-
-    let finalImageUrl = product.image;
-
-    // Handle image update
     if (req.file) {
       const oldId = getPublicId(product.image);
       if (oldId) await cloudinary.uploader.destroy(oldId).catch(() => {});
-      finalImageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname);
-    } else if (imageUrl && imageUrl.trim() && imageUrl.trim() !== product.image) {
-      const oldId = getPublicId(product.image);
-      if (oldId) await cloudinary.uploader.destroy(oldId).catch(() => {});
-      finalImageUrl = imageUrl.trim();
+
+      imageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname);
     }
 
-    // Update fields
-    if (name) product.name = name.trim();
-    if (description !== undefined) product.description = description?.trim() || "";
-    if (pricePerKg && pricePerKg > 0) product.pricePerKg = Number(pricePerKg);
-    if (totalQuantity && totalQuantity >= 0) {
-      product.totalQuantity = Number(totalQuantity);
-      product.stock = Number(totalQuantity);
-    }
-    if (phone) {
-      const cleanPhone = phone.replace(/[^0-9]/g, '');
-      if (cleanPhone.length === 10) product.phone = cleanPhone;
-    }
-    if (category) product.category = category.trim();
-    if (isActive !== undefined) product.isActive = isActive;
-    product.image = finalImageUrl;
-
-    // Recalculate total price
+    product.name = req.body.name || product.name;
+    product.description = req.body.description || product.description;
+    product.pricePerKg = Number(req.body.pricePerKg || product.pricePerKg);
+    product.totalQuantity = Number(req.body.totalQuantity || product.totalQuantity);
     product.totalPrice = product.pricePerKg * product.totalQuantity;
+    product.image = imageUrl;
 
     await product.save();
 
-    res.status(200).json({
-      success: true,
-      message: "Product updated successfully",
-      data: product,
-    });
+    res.json({ success: true, data: product });
+
   } catch (error) {
-    console.error("Update product error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to update product",
-    });
+    res.status(500).json({ success: false });
   }
 };
 
+/* =========================================
+   DELETE PRODUCT
+========================================= */
+
 export const deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const product = await Product.findById(req.params.id);
 
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Invalid product ID format" 
-      });
-    }
-
-    const product = await Product.findById(id);
-    if (!product) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Product not found" 
-      });
-    }
-
-    if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ 
-        success: false, 
-        message: "You don't have permission to delete this product" 
-      });
-    }
+    if (!product) return res.status(404).json({ success: false });
 
     const publicId = getPublicId(product.image);
-    if (publicId && !product.image.includes('placeholder')) {
-      await cloudinary.uploader.destroy(publicId).catch(() => {});
-    }
+    if (publicId) await cloudinary.uploader.destroy(publicId).catch(() => {});
 
     await product.deleteOne();
 
-    res.status(200).json({ 
-      success: true, 
-      message: "Product deleted successfully" 
-    });
-  } catch (error) {
-    console.error("Delete product error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete product",
-    });
+    res.json({ success: true, message: "Deleted" });
+
+  } catch {
+    res.status(500).json({ success: false });
   }
 };
