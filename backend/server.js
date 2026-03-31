@@ -1,6 +1,9 @@
+// ✅ LOAD ENV FIRST (VERY IMPORTANT)
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import axios from "axios";
 import cors from "cors";
 
@@ -10,11 +13,18 @@ import adminRoutes from "./routes/adminRoutes.js";
 import nodeRoutes from "./routes/nodeRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 
-dotenv.config();
+// ✅ DEBUG (optional)
+console.log("🔐 JWT SECRET:", process.env.JWT_SECRET);
+
+// ❗ SAFETY CHECK (prevents crash confusion)
+if (!process.env.JWT_SECRET) {
+  console.error("❌ JWT_SECRET missing in .env");
+  process.exit(1);
+}
 
 const app = express();
 
-// ✅ CORS (clean + correct)
+// ✅ CORS
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -28,20 +38,17 @@ app.use(cors({
 // ✅ Middleware
 app.use(express.json());
 
-// ✅ ROOT ROUTE (IMPORTANT - fixes "Cannot GET /")
+// ✅ ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
 // ✅ MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => {
     console.error("❌ Mongo Error:", err.message);
-    console.log("🔄 Retrying connection...");
   });
-
 
 // ✅ Routes
 app.use("/api/tractors", tractorRoutes);
@@ -61,9 +68,7 @@ app.post("/api/chat", async (req, res) => {
 
     const response = await axios.post(
       "http://51.21.181.68:5678/webhook/chat",
-      {
-        message: userMessage,
-      }
+      { message: userMessage }
     );
 
     res.json({

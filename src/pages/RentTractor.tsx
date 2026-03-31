@@ -297,15 +297,25 @@ const RentTractor = () => {
           <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
             <div className="relative bg-gradient-to-br from-gray-100 to-gray-200
                             h-56 flex items-center justify-center">
-              {tractor?.images?.[0] ? (
-                <img
-                  src={tractor.images[0]}
-                  alt={tractor.model}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="text-8xl opacity-40">🚜</span>
-              )}
+             {tractor?.images && tractor.images.length > 0 ? (
+  <img
+    src={tractor.images[0]}
+    alt={tractor.model}
+    className="h-full w-full object-cover"
+  />
+) : tractor?.image ? (
+  <img
+    src={tractor.image}
+    alt={tractor.model}
+    className="h-full w-full object-cover"
+  />
+) : (
+  <div className="h-full w-full flex items-center justify-center bg-gray-200">
+    <p className="text-gray-500 text-sm font-medium">
+      No Image Available
+    </p>
+  </div>
+)}
               {/* Availability badge */}
               <div className={`absolute top-3 right-3 flex items-center gap-1.5
                               px-3 py-1.5 rounded-full text-xs font-bold shadow

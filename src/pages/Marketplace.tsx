@@ -273,7 +273,7 @@ const Marketplace = () => {
       <div className="bg-gradient-to-r from-green-700 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-4 py-8 text-center">
           <h1 className="text-4xl font-extrabold mb-2">
-            {role === "ecommerce" ? "🛒 My Shop" : "👨‍🌾 My Marketplace"}
+            {role === "ecommerce" ? "🛒 My Shop" : " My Marketplace"}
           </h1>
           <p className="text-green-100 max-w-md mx-auto">
             Manage your farm products — add, edit, delete

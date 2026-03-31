@@ -75,7 +75,7 @@ const Dashboard = () => {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-3 sm:px-4 md:px-6">
           <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
-            🌱 {t("smartFarm")}
+             {t("smartFarm")}
           </h1>
           <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base lg:text-lg opacity-90">
             {t("liveSystem")}

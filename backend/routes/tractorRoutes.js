@@ -4,6 +4,7 @@ import Tractor from "../models/Tractor.js";
 import TractorBooking from "../models/TractorBooking.js";
 import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 import upload, { uploadToCloudinary } from "../middleware/multerConfig.js";
+
 import {
   sendRegistrationEmail,
   sendRentalConfirmationEmail,

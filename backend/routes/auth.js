@@ -6,7 +6,13 @@ import User from "../models/user.js";
 import { sendPasswordResetEmail } from "../utils/emailService.js";
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "hillSmartSecret";
+
+// ✅ STRICT SECRET (NO FALLBACK)
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error("❌ JWT_SECRET not defined in .env");
+}
 
 /* ================= SIGNUP ================= */
 router.post("/signup", async (req, res) => {
@@ -19,7 +25,6 @@ router.post("/signup", async (req, res) => {
       });
     }
 
-    // ✅ ALLOWED ROLES (ADMIN BLOCKED FROM UI)
     const validRoles = ["farmer", "tractor_owner", "buyer"];
     const finalRole = validRoles.includes(role) ? role : "farmer";
 
@@ -28,20 +33,21 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    let Users = await User.find({});
-        let userId;
-        if(Users.length>0){
-            let last_user = Users.slice(-1)[0];
-            userId = last_user.id+1;
-        }else{ 
-            userId = 1
-        }
+    let users = await User.find({});
+    let userId;
+
+    if (users.length > 0) {
+      let last_user = users.slice(-1)[0];
+      userId = last_user.id + 1;
+    } else {
+      userId = 1;
+    }
 
     const user = new User({
-      id : userId,
+      id: userId,
       name,
       email,
-      password, // 🔥 pre-save hook will hash
+      password,
       role: finalRole,
     });
 
@@ -63,7 +69,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
 /* ================= LOGIN ================= */
 router.post("/login", async (req, res) => {
   try {
@@ -75,7 +80,6 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // 🔥 IMPORTANT
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
@@ -85,17 +89,18 @@ router.post("/login", async (req, res) => {
     }
 
     const isMatch = await user.comparePassword(password);
+
     if (!isMatch) {
       return res.status(400).json({
         message: "Invalid email or password",
       });
     }
 
-    // 🔐 TOKEN WITH ROLE
+    // 🔐 GENERATE TOKEN
     const token = jwt.sign(
       {
         _id: user._id,
-        id : user?.id,
+        id: user?.id,
         role: user.role,
       },
       JWT_SECRET,
@@ -107,7 +112,7 @@ router.post("/login", async (req, res) => {
       token,
       user: {
         _id: user._id,
-        id : user?.id,
+        id: user?.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -120,7 +125,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
 /* ================= FORGOT PASSWORD ================= */
 router.post("/forgot-password", async (req, res) => {
   try {
@@ -132,14 +136,12 @@ router.post("/forgot-password", async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    // 🔒 don't reveal user existence
     if (!user) {
       return res.status(200).json({
         message: "If email exists, reset link sent",
       });
     }
 
-    // 🔐 generate token
     const resetToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto
       .createHash("sha256")
@@ -169,7 +171,6 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-
 /* ================= RESET PASSWORD ================= */
 router.post("/reset-password/:token", async (req, res) => {
   try {
@@ -197,7 +198,7 @@ router.post("/reset-password/:token", async (req, res) => {
       });
     }
 
-    user.password = password; // 🔥 pre-save hook
+    user.password = password;
     user.resetPasswordToken = null;
     user.resetPasswordExpire = null;
 

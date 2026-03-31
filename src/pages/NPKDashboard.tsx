@@ -99,7 +99,7 @@ const NPKDashboard = () => {
   return (
     <div className="bg-white p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl sm:rounded-3xl shadow-lg md:shadow-xl border mt-8 sm:mt-10 md:mt-12">
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-emerald-700 mb-8 sm:mb-10 md:mb-12">
-        🌿 {t("soilAnalysisHilly")}
+        {t("soilAnalysisHilly")}
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">

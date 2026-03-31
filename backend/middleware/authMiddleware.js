@@ -1,16 +1,24 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "hillSmartSecret";
-
 /* ======================================
    🔐 PROTECT (VERIFY TOKEN)
 ====================================== */
 export const protect = async (req, res, next) => {
   try {
+    // ✅ Get JWT dynamically (FIX)
+    const JWT_SECRET = process.env.JWT_SECRET;
+
+    if (!JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Server config error: JWT_SECRET missing",
+      });
+    }
+
     let token;
 
-    // ✅ Check Bearer token
+    // ✅ Extract token
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -28,8 +36,9 @@ export const protect = async (req, res, next) => {
     // ✅ Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // 🔥 Use _id ObjectId for Mongo ops, id Number for filters
+    // ✅ Find user
     const userId = decoded._id || decoded.id;
+
     const user = await User.findById(userId).select("-password");
 
     if (!user) {
@@ -39,25 +48,33 @@ export const protect = async (req, res, next) => {
       });
     }
 
-    // ✅ req.user with BOTH IDs
-    req.user = { 
-      id: user.id, 
-      _id: user._id, 
+    // ✅ Attach user
+    req.user = {
+      id: user.id,
+      _id: user._id,
       role: user.role,
-      ...user.toObject()
+      ...user.toObject(),
     };
 
     next();
+
   } catch (error) {
     console.error("🔴 Auth Error:", error.message);
 
+    let message = "Invalid or expired token";
+
+    if (error.name === "JsonWebTokenError") {
+      message = "Invalid token signature";
+    } else if (error.name === "TokenExpiredError") {
+      message = "Token expired";
+    }
+
     return res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+      message,
     });
   }
 };
-
 
 /* ======================================
    🔐 AUTHORIZE ROLES
@@ -72,7 +89,6 @@ export const authorizeRoles = (...roles) => {
       });
     }
 
-    // ✅ role check
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
@@ -83,4 +99,3 @@ export const authorizeRoles = (...roles) => {
     next();
   };
 };
-

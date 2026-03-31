@@ -65,37 +65,17 @@ export const apiFetch = async <T = any>(
 
     console.log(`📡 API Response [${response.status}]:`, data);
 
-    /* 🔐 FIXED AUTH HANDLING */
+    /* 🔐 FIXED AUTH HANDLING - NO AUTO LOGOUT */
     if (response.status === 401) {
-      const msg = data?.message?.toLowerCase() || "";
-
-      const shouldLogout =
-        msg.includes("token") ||
-        msg.includes("expired") ||
-        msg.includes("invalid signature") ||
-        msg.includes("jwt");
-
-      if (shouldLogout) {
-        console.warn("🔐 Token invalid — logging out");
-
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("role");
-
-        window.location.href = "/login";
-
-        return {
-          success: false,
-          message: "Session expired. Please login again.",
-        };
-      }
-
-      // ❗ DO NOT LOGOUT for other 401 errors (like delete)
+      console.warn(`⚠️ 401 for ${endpoint}:`, data?.message);
+      
+      // NEVER auto-logout - let frontend handle
       return {
         success: false,
-        message: data?.message || "Unauthorized request",
+        message: data?.message || "Unauthorized - permission denied",
       };
     }
+
 
     /* ❌ Other errors */
     if (!response.ok) {
