@@ -1,9 +1,9 @@
 /* ============================================================
-   API CLIENT - FINAL FIXED VERSION
+   API CLIENT - PRODUCTION READY (FINAL)
    Fixes:
-   - Prevent logout on delete API
-   - Safe FormData handling
-   - Clean auth handling
+   - Correct FormData handling (Cloudinary upload fix)
+   - Safe auth handling
+   - Clean error handling
 ============================================================ */
 
 import { getApiUrl } from "@/config/api";
@@ -18,18 +18,20 @@ export const apiFetch = async <T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> => {
+
   const token = localStorage.getItem("token");
 
+  // ✅ Detect FormData (VERY IMPORTANT)
   const isFormData = options.body instanceof FormData;
 
   const headers: Record<string, string> = {};
 
-  // ✅ Attach token
+  // 🔐 Attach token
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  // ✅ Content-Type only for JSON
+  // ✅ Only set JSON header if NOT FormData
   if (!isFormData) {
     headers["Content-Type"] = "application/json";
   }
@@ -37,7 +39,9 @@ export const apiFetch = async <T = any>(
   // ✅ Merge headers safely
   if (options.headers) {
     const callerHeaders = options.headers as Record<string, string>;
+
     Object.entries(callerHeaders).forEach(([key, value]) => {
+      // ❌ Prevent breaking FormData
       if (isFormData && key.toLowerCase() === "content-type") return;
       headers[key] = value;
     });
@@ -50,6 +54,7 @@ export const apiFetch = async <T = any>(
 
   try {
     console.log(`📡 API ${config.method || "GET"} → ${endpoint}`);
+    console.log("📦 Is FormData:", isFormData);
 
     const response = await fetch(getApiUrl(endpoint), config);
 
@@ -65,19 +70,17 @@ export const apiFetch = async <T = any>(
 
     console.log(`📡 API Response [${response.status}]:`, data);
 
-    /* 🔐 FIXED AUTH HANDLING - NO AUTO LOGOUT */
+    // 🔐 Handle Unauthorized (NO auto logout)
     if (response.status === 401) {
       console.warn(`⚠️ 401 for ${endpoint}:`, data?.message);
-      
-      // NEVER auto-logout - let frontend handle
+
       return {
         success: false,
-        message: data?.message || "Unauthorized - permission denied",
+        message: data?.message || "Unauthorized",
       };
     }
 
-
-    /* ❌ Other errors */
+    // ❌ Other errors
     if (!response.ok) {
       return {
         success: false,

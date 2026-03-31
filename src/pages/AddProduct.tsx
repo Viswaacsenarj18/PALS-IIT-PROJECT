@@ -86,97 +86,171 @@ const AddProduct = () => {
     if (url) setError("");
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setLoading(true);
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setSuccess("");
+  //   setLoading(true);
 
-    // Validation
-    if (!formData.name.trim()) {
-      setError(t("productNameRequired") || "Product name required");
-      setLoading(false);
-      return;
-    }
-    if (formData.name.length < 3) {
-      setError(t("productNameMin") || "Name too short");
-      setLoading(false);
-      return;
-    }
-    if (formData.pricePerKg <= 0) {
-      setError(t("priceRequired") || "Price required");
-      setLoading(false);
-      return;
-    }
-    if (formData.totalQuantity <= 0) {
-      setError(t("quantityRequired") || "Quantity required");
-      setLoading(false);
-      return;
-    }
-    if (!formData.phone.trim()) {
-      setError(t("phoneRequired") || "Phone required");
-      setLoading(false);
-      return;
-    }
-    const cleanPhone = formData.phone.replace(/[^0-9]/g, "");
-    if (cleanPhone.length !== 10) {
-      setError(t("invalidPhone") || "Valid 10-digit phone required");
-      setLoading(false);
-      return;
-    }
-    if (!formData.category.trim()) {
-      setError(t("categoryRequired") || "Category required");
-      setLoading(false);
-      return;
-    }
+  //   // Validation
+  //   if (!formData.name.trim()) {
+  //     setError(t("productNameRequired") || "Product name required");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (formData.name.length < 3) {
+  //     setError(t("productNameMin") || "Name too short");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (formData.pricePerKg <= 0) {
+  //     setError(t("priceRequired") || "Price required");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (formData.totalQuantity <= 0) {
+  //     setError(t("quantityRequired") || "Quantity required");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (!formData.phone.trim()) {
+  //     setError(t("phoneRequired") || "Phone required");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   const cleanPhone = formData.phone.replace(/[^0-9]/g, "");
+  //   if (cleanPhone.length !== 10) {
+  //     setError(t("invalidPhone") || "Valid 10-digit phone required");
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (!formData.category.trim()) {
+  //     setError(t("categoryRequired") || "Category required");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    try {
-      const submitData = new FormData();
-      submitData.append("name", formData.name.trim());
-      submitData.append("description", formData.description.trim());
-      submitData.append("pricePerKg", formData.pricePerKg.toString());
-      submitData.append("totalQuantity", formData.totalQuantity.toString());
-      submitData.append("phone", cleanPhone);
-      submitData.append("category", formData.category.trim());
+  //   try {
+  //     const submitData = new FormData();
+  //     submitData.append("name", formData.name.trim());
+  //     submitData.append("description", formData.description.trim());
+  //     submitData.append("pricePerKg", formData.pricePerKg.toString());
+  //     submitData.append("totalQuantity", formData.totalQuantity.toString());
+  //     submitData.append("phone", cleanPhone);
+  //     submitData.append("category", formData.category.trim());
 
-      // Image handling
-      if (uploadMethod === "file" && formData.image) {
-        submitData.append("image", formData.image);
-      } else if (uploadMethod === "url" && formData.imageUrl.trim()) {
-        submitData.append("imageUrl", formData.imageUrl.trim());
+  //     // Image handling
+  //     if (uploadMethod === "file" && formData.image) {
+  //       submitData.append("image", formData.image);
+  //     } else if (uploadMethod === "url" && formData.imageUrl.trim()) {
+  //       submitData.append("imageUrl", formData.imageUrl.trim());
+  //     }
+
+  //     const token = localStorage.getItem("token");
+  //     const data = await apiFetch("/api/products", {
+  //       method: "POST",
+  //       body: submitData,
+  //     });
+
+  //     if (data.success) {
+  //       setSuccess(t("productAddedSuccess") || "Product added successfully!");
+  //       setFormData({
+  //         name: "",
+  //         description: "",
+  //         pricePerKg: 0,
+  //         totalQuantity: 0,
+  //         phone: "",
+  //         category: "",
+  //         image: null,
+  //         imageUrl: "",
+  //         imagePreview: "",
+  //       });
+  //       setTimeout(() => navigate("/marketplace" || "/my-products"), 2000);
+  //     } else {
+  //       setError(data.message || (t("productAddFailed") || "Failed to add product"));
+  //     }
+  //   } catch (err: any) {
+  //     console.error("Submit error:", err);
+  //     setError(t("networkError") || "Network error");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+// ONLY SHOWING FIXED handleSubmit PART (replace this inside your file)
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
+  setLoading(true);
+
+  try {
+    const submitData = new FormData();
+
+    submitData.append("name", formData.name.trim());
+    submitData.append("description", formData.description.trim());
+    submitData.append("pricePerKg", formData.pricePerKg.toString());
+    submitData.append("totalQuantity", formData.totalQuantity.toString());
+    submitData.append("phone", formData.phone.replace(/[^0-9]/g, ""));
+    submitData.append("category", formData.category.trim());
+
+    // 🔥 FIX 1: FORCE IMAGE PROPERLY
+    if (uploadMethod === "file") {
+      if (!formData.image) {
+        setError("Please select an image file");
+        setLoading(false);
+        return;
       }
 
-      const token = localStorage.getItem("token");
-      const data = await apiFetch("/api/products", {
-        method: "POST",
-        body: submitData,
+      console.log("📦 Uploading FILE:", formData.image);
+
+      submitData.append("image", formData.image); // MUST BE "image"
+    }
+
+    // 🔥 FIX 2: URL fallback
+    if (uploadMethod === "url" && formData.imageUrl.trim()) {
+      console.log("🌐 Using Image URL:", formData.imageUrl);
+
+      submitData.append("imageUrl", formData.imageUrl.trim());
+    }
+
+    // 🔥 DEBUG (VERY IMPORTANT)
+    for (let pair of submitData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    const data = await apiFetch("/api/products", {
+      method: "POST",
+      body: submitData,
+    });
+
+    if (data.success) {
+      setSuccess("Product added successfully!");
+
+      setFormData({
+        name: "",
+        description: "",
+        pricePerKg: 0,
+        totalQuantity: 0,
+        phone: "",
+        category: "",
+        image: null,
+        imageUrl: "",
+        imagePreview: "",
       });
 
-      if (data.success) {
-        setSuccess(t("productAddedSuccess") || "Product added successfully!");
-        setFormData({
-          name: "",
-          description: "",
-          pricePerKg: 0,
-          totalQuantity: 0,
-          phone: "",
-          category: "",
-          image: null,
-          imageUrl: "",
-          imagePreview: "",
-        });
-        setTimeout(() => navigate("/marketplace" || "/my-products"), 2000);
-      } else {
-        setError(data.message || (t("productAddFailed") || "Failed to add product"));
-      }
-    } catch (err: any) {
-      console.error("Submit error:", err);
-      setError(t("networkError") || "Network error");
-    } finally {
-      setLoading(false);
+      setTimeout(() => navigate("/marketplace"), 2000);
+    } else {
+      setError(data.message || "Failed to add product");
     }
-  };
 
+  } catch (err: any) {
+    console.error("Submit error:", err);
+    setError("Network error");
+  } finally {
+    setLoading(false);
+  }
+};
   const totalPrice = formData.pricePerKg * formData.totalQuantity;
 
   return (
