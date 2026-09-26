@@ -66,6 +66,16 @@ const App = () => {
         <Route path="/forgot-password"       element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
+        {/* ── Default route — Dashboard shown directly (no login required) */}
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Dashboard />
+            </Layout>
+          }
+        />
+
         {/* Public product pages — no login needed */}
         <Route path="/buy/:id"      element={<BuyProduct />} />
         <Route path="/product/:id"  element={<ProductDetails />} />
@@ -77,17 +87,6 @@ const App = () => {
             <ProtectedRoute>
               <Layout>
                 <Routes>
-
-                  {/* ── FARMER + BUYER ── */}
-                  <Route
-                    path="/"
-                    element={
-                      <RoleRoute
-                        element={<Dashboard />}
-                        allowed={["farmer", "buyer"]}
-                      />
-                    }
-                  />
 
                   {/* Marketplace — all logged-in roles */}
                   <Route path="/marketplace" element={<Marketplace />} />
